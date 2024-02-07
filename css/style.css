@@ -30,3 +30,7 @@ img {
     cursor: pointer;
 }
 
+.hints span,
+.hints img {
+    display: inline-block;
+}

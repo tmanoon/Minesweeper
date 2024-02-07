@@ -18,7 +18,25 @@ function returnToRegularExpression() {
     img.src = '../icons/regular-randy.png'
 }
 
-function timer() {
+function timeCounter() {
     const spanForTimer = document.querySelector('.timer span')
     spanForTimer.innerText = gGame.secsPassed
+}
+
+function showHints() {
+    const hintsImages = document.querySelectorAll('.hintImg')
+    for (let i = 0; i < hintsImages.length; i++) {
+        if (hintsImages[i].style.display === 'none') hintsImages[i].style.display = 'inline-block'
+    }
+}
+
+function turnOffAndRemoveHint() {
+        const hintsImages = document.querySelectorAll('.hintImg')
+        for (let i = 0; i < hintsImages.length; i++) {
+            const currImage = hintsImages[i]
+            if (currImage.style.backgroundColor === 'beige') {
+                currImage.style.backgroundColor = 'transparent'
+                currImage.style.display = 'none'
+            }
+        }
 }
