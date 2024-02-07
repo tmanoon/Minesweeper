@@ -1,3 +1,7 @@
+body {
+    text-align: center;
+}
+
 td {
     background-color: darkgray;
     border: 3px ridge rgb(65, 65, 65);
@@ -8,4 +12,21 @@ td {
 
 table {
     border: 3px darkgray ;
+    margin: auto;
 }
+
+.img-button,
+.hintImg{
+    width: 37px;
+    height: 37px;
+}
+
+.smiley,
+.hintImg {
+    background-color: transparent;
+}
+
+img {
+    cursor: pointer;
+}
+

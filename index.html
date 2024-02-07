@@ -1,25 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minesweeper</title>
-    <link rel="stylesheet" href="css/style.css"/>
+    <link rel="stylesheet" href="css/style.css" />
 </head>
-<body onload="onInit()" >
+
+<body onload="onInit()">
     <div class="container">
         <!-- ADD TO BODY WHEN TOTALLY FINISHED!!!!!!!!!!! oncontextmenu="disableMenu(event)" -->
+        <p class="lives">You have <span></span> lives left</p>
+
+        <p class="timer">How much time passed: <span>0</span> seconds</p>
+        <p class="hints">
+            <span class="hint-1" onclick="turnOnHintMode(this)"><img class="hintImg" src="./icons/hint.png"/></span>
+            <span class="hint-2" onclick="turnOnHintMode(this)"><img class="hintImg" src="./icons/hint.png"/></span>
+            <span class="hint-3" onclick="turnOnHintMode(this)"><img class="hintImg" src="./icons/hint.png"/></span>
+        </p>
         <div class="levels">
-            <button>Beginner</button>
+            <button onclick="setLevelSize(4, 2)">Beginner</button>
             <button onclick="setLevelSize(8, 14)">Medium</button>
             <button onclick="setLevelSize(12, 32)">Expert</button>
         </div>
+        <button class="smiley" onclick="onInit()"><img class="img-button" onmouseup="returnToRegularExpression(this)"
+                src="./icons/regular-randy.png" /></button>
         <table>
-            
+
         </table>
     </div>
     <script src="js/utils.js"></script>
     <script src="js/game.js"></script>
     <footer>© Made with great love to coding by Tmanoon (Shoval)</footer>
 </body>
+
 </html>
