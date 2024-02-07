@@ -1,0 +1,11 @@
+td {
+    background-color: darkgray;
+    border: 3px ridge rgb(65, 65, 65);
+    width: 30px;
+    height: 30px;
+    text-align: center;
+}
+
+table {
+    border: 3px darkgray ;
+}
