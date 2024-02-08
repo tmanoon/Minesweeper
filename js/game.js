@@ -264,7 +264,7 @@ function unrevealCellAndNegs(rowIdx, colIdx, originalLives) {
             gGame.shownCount--
         }
     }
-    gRandyBtn.src = '../icons/regular-randy.png'
+    gRandyBtn.src = './icons/regular-randy.png'
 }
 
 function turnOffHintMode() {
