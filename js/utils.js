@@ -1,5 +1,5 @@
 const gRandyBtn = document.querySelector('.img-button')
-
+   const gElTimerSpan = document.querySelector('.timer span')
 function getRandomIntInclusive(min = 0, max = gBoard.length - 1) {
     return Math.floor(Math.random() * (max - min) + min)
 }
@@ -19,8 +19,8 @@ function returnToRegularExpression() {
 }
 
 function timeCounter() {
-    const spanForTimer = document.querySelector('.timer span')
-    spanForTimer.innerText = gGame.secsPassed
+ 
+    gElTimerSpan.innerText = gGame.secsPassed
 }
 
 function showHints() {

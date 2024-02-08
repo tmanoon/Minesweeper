@@ -21,7 +21,7 @@ const gGame = {
 }
 
 function onInit() {
-    if (gSecondsInterval) clearInterval(gSecondsInterval)
+    if(gSecondsInterval) clearInterval(gSecondsInterval)
     showHints()
     updateLives(lives)
     createBoard()
@@ -113,7 +113,7 @@ function showMine(cell, i, j) {
 
 function setMinesNegsCount(board) {
     for (let i = 0; i < board.length; i++) {
-        for (let j = 0; j < board.length; j++) {
+        for (let j = 0; j < board[0].length; j++) {
             const currCell = board[i][j]
             if (currCell.isMine) continue
             currCell.minesAroundCount = countMinesAroundCell(i, j)
@@ -180,7 +180,7 @@ function onCellMarked(elCell) {
 
 function checkIfFirstClick() {
     for (let i = 0; i < gBoard.length; i++) {
-        for (let j = 0; j < gBoard.length; j++) {
+        for (let j = 0; j < gBoard[0].length; j++) {
             const currCell = gBoard[i][j]
             if (currCell.wasHinted || currCell.isShown) return false
         }
@@ -189,6 +189,8 @@ function checkIfFirstClick() {
 }
 
 function setLevelSize(numForMatrix, numOfMines) {
+    gElTimerSpan.innerText = 0
+    gGame.secsPassed = 0
     gLevel.SIZE = numForMatrix
     gLevel.MINES = numOfMines
     gBoard = []
@@ -263,7 +265,7 @@ function unrevealCellAndNegs(rowIdx, colIdx, originalLives) {
 
 function turnOffHintMode() {
     for(let i = 0; i < gBoard.length; i++) {
-        for(let j = 0; j < gBoard.length; j++) {
+        for(let j = 0; j < gBoard[0].length; j++) {
             if(gBoard[i][j].isHint === true) gBoard[i][j].isHint = false
         }
     }
