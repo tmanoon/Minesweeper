@@ -1,5 +1,6 @@
 const gRandyBtn = document.querySelector('.img-button')
-   const gElTimerSpan = document.querySelector('.timer span')
+const gElTimerSpan = document.querySelector('.timer span')
+
 function getRandomIntInclusive(min = 0, max = gBoard.length - 1) {
     return Math.floor(Math.random() * (max - min) + min)
 }
