@@ -17,7 +17,7 @@ function disableMenu(ev) {
 
 function returnToRegularExpression() {
     const img = document.querySelector('#img-button')
-    img.src = '../icons/regular-randy.png'
+    img.src = './icons/regular-randy.png'
 }
 
 function timeCounter() {
