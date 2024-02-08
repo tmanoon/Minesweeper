@@ -22,8 +22,9 @@ const gGame = {
 }
 
 function onInit() {
-    lives = 3
+    updateVariables()
     if (gSecondsInterval) clearInterval(gSecondsInterval)
+    timeCounter()
     updateSpanSafeClicks()
     showHints()
     updateLives(lives)
@@ -140,11 +141,11 @@ function checkGameOver() {
     const winningTotal = (gLevel.SIZE ** 2) - (gLevel.MINES)
     const cellsClickedAndMarked = gGame.shownCount + gGame.markedCount
     if (gGame.secsPassed < 90 && cellsClickedAndMarked === winningTotal) {
-        console.log(`You did it! you won!`)
+        alert(`You did it! you won!`)
         clearInterval(gSecondsInterval)
     }
     if (gGame.secsPassed >= 90 && cellsClickedAndMarked !== winningTotal) {
-        console.log(`Time has run out and you haven't found all the cells yet. You lost.`)
+        alert(`Time has run out and you haven't found all the cells yet. You lost.`)
         gRandyBtn.src = '../icons/sad-randy.png'
         clearInterval(gSecondsInterval)
     }
@@ -210,7 +211,7 @@ function checkIfEnoughLives() {
     if (lives === 0 && !isHint) {
         clearInterval(gSecondsInterval)
         gRandyBtn.src = './icons/sad-randy.png'
-        console.log('No more lives. You Lost!')
+        alert('No more lives. You Lost! New game begins.')
         onInit()
     }
 }
@@ -288,14 +289,4 @@ function useSafeClick() {
             }
         }
     }
-}
-
-function handleChosenCell(i, j) {
-    markCell(i, j)
-    setTimeout(() => {
-        const elCell = document.querySelector(`.cell-${i}-${j}`)
-        elCell.style.boxShadow = 'none'
-    }, 1500)
-    safeClicks--
-    updateSpanSafeClicks()
 }

@@ -89,3 +89,18 @@ function startCountingSeconds() {
         checkGameOver()
     }, 1000)
 }
+
+function updateVariables() {
+    lives = 3
+    gGame.secsPassed = 0
+}
+
+function handleChosenCell(i, j) {
+    markCell(i, j)
+    setTimeout(() => {
+        const elCell = document.querySelector(`.cell-${i}-${j}`)
+        elCell.style.boxShadow = 'none'
+    }, 1500)
+    safeClicks--
+    updateSpanSafeClicks()
+}
