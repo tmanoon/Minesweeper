@@ -2,6 +2,7 @@
 
 const FLAG = '🏴‍☠️'
 const MINE = '💣'
+const EXPLODE = '💥'
 const EMPTY = ''
 var lives = 3
 var safeClicks = 3
@@ -108,7 +109,7 @@ function showMine(cell, i, j) {
     updateLives(lives)
     gBoard[i][j].isShown = true
     setTimeout(() => {
-        cell.innerText = '💥'
+        cell.innerText = EXPLODE
     }, 500)
 }
 
@@ -201,14 +202,6 @@ function setLevelSize(numForMatrix, numOfMines) {
 function updateLives(numOfLives) {
     const spanOfLives = document.querySelector(".lives span")
     spanOfLives.innerText = numOfLives
-}
-
-function startCountingSeconds() {
-    gSecondsInterval = setInterval(function () {
-        timeCounter()
-        gGame.secsPassed++
-        checkGameOver()
-    }, 1000)
 }
 
 function checkIfEnoughLives() {

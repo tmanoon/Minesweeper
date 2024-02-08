@@ -81,3 +81,11 @@ function markCell(i, j) {
 function updateSpanSafeClicks() {
     elSpanSafeClick.innerText = safeClicks
 }
+
+function startCountingSeconds() {
+    gSecondsInterval = setInterval(function () {
+        timeCounter()
+        gGame.secsPassed++
+        checkGameOver()
+    }, 1000)
+}

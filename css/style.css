@@ -103,6 +103,7 @@ audio {
 footer {
     font-family: common-font, tahoma;
     font-size: 11px;
+    color: white;
 }
 
 .container {
