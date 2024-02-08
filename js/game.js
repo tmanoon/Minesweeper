@@ -22,6 +22,7 @@ const gGame = {
 }
 
 function onInit() {
+    lives = 3
     if (gSecondsInterval) clearInterval(gSecondsInterval)
     updateSpanSafeClicks()
     showHints()
