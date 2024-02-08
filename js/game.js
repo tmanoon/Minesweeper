@@ -4,8 +4,8 @@ const FLAG = '🏴‍☠️'
 const MINE = '💣'
 const EMPTY = ''
 var lives = 3
+var safeClicks = 3
 var gSecondsInterval
-
 var gBoard = []
 
 var gLevel = {
@@ -21,7 +21,8 @@ const gGame = {
 }
 
 function onInit() {
-    if(gSecondsInterval) clearInterval(gSecondsInterval)
+    if (gSecondsInterval) clearInterval(gSecondsInterval)
+    updateSpanSafeClicks()
     showHints()
     updateLives(lives)
     createBoard()
@@ -30,7 +31,7 @@ function onInit() {
 
 function createBoard() {
     for (let i = 0; i < gLevel.SIZE; i++) {
-        gBoard.push([])
+        gBoard[i] = []
         for (let j = 0; j < gLevel.SIZE; j++) {
             const currCell = {
                 minesAroundCount: 0,
@@ -52,7 +53,7 @@ function renderBoard() {
     for (let i = 0; i < gLevel.SIZE; i++) {
         strHTML += `<tr>`
         for (let j = 0; j < gLevel.SIZE; j++) {
-            const className = `cell ${i}-${j}`
+            const className = `cell-${i}-${j}`
             strHTML += `<td class="${className}" data-i="${i}" data-j="${j}" onmouseup="returnToRegularExpression()" 
             onmousedown="onCellClicked(this, event, ${i}, ${j})">${EMPTY}</td>`
         }
@@ -221,9 +222,9 @@ function checkIfEnoughLives() {
 }
 
 function checkHintMode() {
-    for(let i = 0; i < gBoard.length; i++) {
-        for(let j = 0; j < gBoard.length; j++) {
-            if(gBoard[i][j].isHint) return true
+    for (let i = 0; i < gBoard.length; i++) {
+        for (let j = 0; j < gBoard.length; j++) {
+            if (gBoard[i][j].isHint) return true
         }
     }
     return false
@@ -246,7 +247,7 @@ function revealCellsAndNegs(rowIdx, colIdx) {
         for (let j = colIdx + 1; j >= colIdx - 1; j--) {
             if (j < 0 || j >= gBoard[0].length) continue
             const currElCell = document.querySelector(`[data-i="${i}"][data-j="${j}"]`)
-            onLeftClick(currElCell ,i, j)
+            onLeftClick(currElCell, i, j)
         }
     }
     setTimeout(() => {
@@ -254,7 +255,7 @@ function revealCellsAndNegs(rowIdx, colIdx) {
         turnOffAndRemoveHint()
         turnOffHintMode()
     }, 1000)
-    
+
 }
 
 function unrevealCellAndNegs(rowIdx, colIdx, originalLives) {
@@ -270,13 +271,37 @@ function unrevealCellAndNegs(rowIdx, colIdx, originalLives) {
             gGame.shownCount--
         }
     }
-    gRandyBtn.src='../icons/regular-randy.png'
+    gRandyBtn.src = '../icons/regular-randy.png'
 }
 
 function turnOffHintMode() {
-    for(let i = 0; i < gBoard.length; i++) {
-        for(let j = 0; j < gBoard[0].length; j++) {
-            if(gBoard[i][j].isHint === true) gBoard[i][j].isHint = false
+    for (let i = 0; i < gBoard.length; i++) {
+        for (let j = 0; j < gBoard[0].length; j++) {
+            if (gBoard[i][j].isHint === true) gBoard[i][j].isHint = false
         }
     }
+}
+
+function useSafeClick() {
+    if (safeClicks === 0) return
+    for (let i = 0; i < gLevel.SIZE; i++) {
+        for (let j = 0; j < gLevel.SIZE; j++) {
+            const iIdxOfRandSafeCell = getRandomIntInclusive()
+            const jIdxOfRandSafeCell = getRandomIntInclusive()
+            if (!gBoard[iIdxOfRandSafeCell][jIdxOfRandSafeCell].isMine && !gBoard[iIdxOfRandSafeCell][jIdxOfRandSafeCell].isShown) {
+                handleChosenCell(iIdxOfRandSafeCell, jIdxOfRandSafeCell)
+                return
+            }
+        }
+    }
+}
+
+function handleChosenCell(i, j) {
+    markCell(i, j)
+    setTimeout(() => {
+        const elCell = document.querySelector(`.cell-${i}-${j}`)
+        elCell.style.boxShadow = 'none'
+    }, 1500)
+    safeClicks--
+    updateSpanSafeClicks()
 }
