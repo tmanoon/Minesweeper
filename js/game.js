@@ -66,7 +66,7 @@ function renderBoard() {
 
 function onCellClicked(elCell, ev, i, j) {
     const click = ev.button
-    gRandyBtn.src = '../icons/anxious-randy.png'
+    gRandyBtn.src = './icons/anxious-randy.png'
 
     if (click === 0) {
         if (checkIfFirstClick()) {
@@ -104,7 +104,7 @@ function showMine(cell, i, j) {
     cell.innerText = MINE
     lives--
     checkIfEnoughLives()
-    gRandyBtn.src = '../icons/sad-randy.png'
+    gRandyBtn.src = './icons/sad-randy.png'
     gGame.shownCount--
     updateLives(lives)
     gBoard[i][j].isShown = true
@@ -208,7 +208,7 @@ function checkIfEnoughLives() {
     const isHint = checkHintMode()
     if (lives === 0 && !isHint) {
         clearInterval(gSecondsInterval)
-        gRandyBtn.src = '../icons/sad-randy.png'
+        gRandyBtn.src = './icons/sad-randy.png'
         console.log('No more lives. You Lost!')
         onInit()
     }
