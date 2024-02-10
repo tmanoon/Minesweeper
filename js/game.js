@@ -18,7 +18,8 @@ const gGame = {
     isOn: false,
     shownCount: 0,
     markedCount: 0,
-    secsPassed: 0
+    secsPassed: 0,
+    steps: []
 }
 
 function onInit() {
@@ -83,10 +84,12 @@ function onCellClicked(elCell, ev, i, j) {
             onLeftClick(elCell, i, j)
             startCountingSeconds()
             if (gBoard[i][j].isHint) revealCellsAndNegs(i, j)
+            gGame.steps.push(gBoard[i][j])
             return
         }
         if (gBoard[i][j].isHint) revealCellsAndNegs(i, j)
         onLeftClick(elCell, i, j)
+        gGame.steps.push(gBoard[i][j])
     }
     if (click === 2) {
         onCellMarked(elCell)
@@ -102,6 +105,7 @@ function onLeftClick(elCell, i, j) {
     else {
         gBoard[i][j].isShown = true
         elCell.innerText = gBoard[i][j].minesAroundCount
+        if(gBoard[i][j].isHint) gBoard[i][j].isShown = false
     }
 }
 
@@ -157,9 +161,6 @@ function checkGameOver() {
     }
 }
 
-function expandShown(board, elCell, i, j) { //try afterwards
-}
-
 function randomMines(numOfMines, i, j) {
     while (numOfMines > 0) {
         const iIdxOfRandCell = getRandomIntInclusive()
@@ -179,12 +180,15 @@ function onCellMarked(elCell) {
         elCell.innerText = FLAG
         gBoard[iIdxOfCell][jIdxOfCell].isMarked = true
         gGame.markedCount++
+        gGame.steps.push(gBoard[iIdxOfCell][jIdxOfCell])
         return
     }
     if (gBoard[iIdxOfCell][jIdxOfCell].isMarked === true) {
         elCell.innerText = EMPTY
         gBoard[iIdxOfCell][jIdxOfCell].isMarked = false
         gGame.markedCount--
+        const idxOfCell = gGame.steps.indexOf(gBoard[iIdxOfCell][jIdxOfCell])
+        gGame.steps.splice(idxOfCell, 1)
     }
 }
 
@@ -236,6 +240,7 @@ function turnOnHintMode(img) {
     img.style.backgroundColor = 'beige'
     for (let i = 0; i < gBoard.length; i++) {
         for (let j = 0; j < gBoard[0].length; j++) {
+            if(gBoard[i][j].isShown) continue
             gBoard[i][j].isHint = true
         }
     }
@@ -248,6 +253,7 @@ function revealCellsAndNegs(rowIdx, colIdx) {
         if (i < 0 || i >= gBoard.length) continue
         for (let j = colIdx + 1; j >= colIdx - 1; j--) {
             if (j < 0 || j >= gBoard[0].length) continue
+            if (gBoard[i][j].isShown) continue
             const currElCell = document.querySelector(`[data-i="${i}"][data-j="${j}"]`)
             onLeftClick(currElCell, i, j)
         }
@@ -265,6 +271,7 @@ function unrevealCellAndNegs(rowIdx, colIdx, originalLives) {
         if (i < 0 || i >= gBoard.length) continue
         for (let j = colIdx + 1; j >= colIdx - 1; j--) {
             if (j < 0 || j >= gBoard[0].length) continue
+            if (!gBoard[i][j].isHint) continue
             const elCell = document.querySelector(`[data-i="${i}"][data-j="${j}"]`)
             elCell.innerText = EMPTY
             lives = originalLives
