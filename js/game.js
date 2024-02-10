@@ -306,7 +306,7 @@ function useSafeClick() {
 }
 
 function mineExterminator() {
-    if (gLevel.SIZE === 4) return alert('The mine exterminator csn be used only in Medium or Expert mode.')
+    if (gLevel.SIZE === 4) return alert('The mine exterminator can be used only in Medium or Expert mode.')
     else if (checkIfFirstClick()) return alert('You have not started to play, so no mines are set for me to delete.')
 
     const mines = []
