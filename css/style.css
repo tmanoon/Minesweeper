@@ -48,7 +48,8 @@ table {
 }
 
 #img-button,
-.hintImg {
+.hintImg,
+.mine-exterminator {
     width: 37px;
     height: 37px;
     background-color: transparent;

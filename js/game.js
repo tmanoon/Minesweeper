@@ -22,6 +22,7 @@ const gGame = {
 }
 
 function onInit() {
+    randomSong()
     updateVariables()
     if (gSecondsInterval) clearInterval(gSecondsInterval)
     timeCounter()
@@ -38,6 +39,7 @@ function createBoard() {
         for (let j = 0; j < gLevel.SIZE; j++) {
             const currCell = {
                 minesAroundCount: 0,
+                location: { i, j },
                 isShown: false,
                 isMine: false,
                 isMarked: false,
@@ -69,6 +71,7 @@ function renderBoard() {
 function onCellClicked(elCell, ev, i, j) {
     const click = ev.button
     gRandyBtn.src = './icons/anxious-randy.png'
+    gGame.isOn = true
 
     if (click === 0) {
         if (checkIfFirstClick()) {
@@ -138,16 +141,19 @@ function countMinesAroundCell(rowIdx, colIdx) {
 }
 
 function checkGameOver() {
-    const winningTotal = (gLevel.SIZE ** 2) - (gLevel.MINES)
+    const winningTotal = (gLevel.SIZE ** 2)
     const cellsClickedAndMarked = gGame.shownCount + gGame.markedCount
     if (gGame.secsPassed < 90 && cellsClickedAndMarked === winningTotal) {
         alert(`You did it! you won!`)
+        checkBestScore(gGame.secsPassed, cellsClickedAndMarked)
+        !gGame.isOn
         clearInterval(gSecondsInterval)
     }
     if (gGame.secsPassed >= 90 && cellsClickedAndMarked !== winningTotal) {
         alert(`Time has run out and you haven't found all the cells yet. You lost.`)
         gRandyBtn.src = '../icons/sad-randy.png'
         clearInterval(gSecondsInterval)
+        !gGame.isOn
     }
 }
 
@@ -171,14 +177,14 @@ function onCellMarked(elCell) {
 
     if (gBoard[iIdxOfCell][jIdxOfCell].isMarked === false) {
         elCell.innerText = FLAG
-        gGame.markedCount++
         gBoard[iIdxOfCell][jIdxOfCell].isMarked = true
+        gGame.markedCount++
         return
     }
     if (gBoard[iIdxOfCell][jIdxOfCell].isMarked === true) {
         elCell.innerText = EMPTY
-        gGame.markedCount--
         gBoard[iIdxOfCell][jIdxOfCell].isMarked = false
+        gGame.markedCount--
     }
 }
 
@@ -186,7 +192,8 @@ function checkIfFirstClick() {
     for (let i = 0; i < gBoard.length; i++) {
         for (let j = 0; j < gBoard[0].length; j++) {
             const currCell = gBoard[i][j]
-            if (currCell.wasHinted || currCell.isShown) return false
+            if (currCell.wasHinted) return false
+            else if (currCell.isShown) return false
         }
     }
     return true
@@ -211,7 +218,7 @@ function checkIfEnoughLives() {
     if (lives === 0 && !isHint) {
         clearInterval(gSecondsInterval)
         gRandyBtn.src = './icons/sad-randy.png'
-        alert('No more lives. You Lost! New game begins.')
+        alert('No more lives. You Lost! New game begins.') //changed to alert so the user can understand what happens, github does not recognize
         onInit()
     }
 }
@@ -287,6 +294,30 @@ function useSafeClick() {
                 handleChosenCell(iIdxOfRandSafeCell, jIdxOfRandSafeCell)
                 return
             }
+        }
+    }
+}
+
+function mineExterminator() {
+    if (gLevel.SIZE === 4) return alert('The mine exterminator csn be used only in Medium or Expert mode.')
+    else if (checkIfFirstClick()) return alert('You have not started to play, so no mines are set for me to delete.')
+
+    const mines = []
+    findMines(mines)
+    for (let e = 0; e < 3; e++) {
+        const idxOfMine = getRandomIntInclusive(0, mines.length - 1)
+        const selectedCell = gBoard[mines[idxOfMine].i][mines[idxOfMine].j]
+        selectedCell.isMine = false
+        mines.splice(idxOfMine, 1)
+    }
+    setMinesNegsCount(gBoard)
+}
+
+function findMines(mines) {
+    for (let i = 0; i < gLevel.SIZE; i++) {
+        for (let j = 0; j < gLevel.SIZE; j++) {
+            const currCell = gBoard[i][j]
+            if (currCell.isMine) mines.push(currCell.location)
         }
     }
 }

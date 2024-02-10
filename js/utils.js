@@ -1,6 +1,7 @@
 const gRandyBtn = document.querySelector('#img-button')
 const gElTimerSpan = document.querySelector('.timer span')
 const elSpanSafeClick = document.querySelector('.safe-click')
+const possSongs = ['./audio/stan.mp3', './audio/monicas.mp3', './audio/nitzozot.mp3', './audio/kansas.mp3']
 
 function getRandomIntInclusive(min = 0, max = gBoard.length - 1) {
     return Math.floor(Math.random() * (max - min) + min)
@@ -93,6 +94,10 @@ function startCountingSeconds() {
 function updateVariables() {
     lives = 3
     gGame.secsPassed = 0
+    safeClicks = 3
+    gGame.markedCount = 0
+    gGame.shownCount = 0
+
 }
 
 function handleChosenCell(i, j) {
@@ -103,4 +108,34 @@ function handleChosenCell(i, j) {
     }, 1500)
     safeClicks--
     updateSpanSafeClicks()
+}
+
+function randomSong() {
+    const elAudio = document.querySelector('audio')
+    const chosenSongIdx = getRandomIntInclusive(0, possSongs.length - 1)
+    elAudio.src = possSongs[chosenSongIdx]
+}
+
+function checkBestScore(seconds, score) {
+    const elSpanScore = document.querySelector('.best-score .score')
+    const elSpanSeconds = document.querySelector('.best-score .seconds')
+
+    if (typeof (Storage) !== undefined) {
+        if (!localStorage.getItem('score') && !localStorage.getItem('seconds')) {
+            localStorage.setItem('score', JSON.stringify(score))
+            localStorage.setItem('seconds', JSON.stringify(seconds))
+        } else {
+            const secsToCompare = localStorage.getItem('seconds')
+            const scoreToCompare = localStorage.getItem('score')
+            if (secsToCompare > seconds && scoreToCompare < score) {
+                localStorage.removeItem('score')
+                localStorage.removeItem('seconds')
+                localStorage.setItem('score', JSON.stringify(score))
+                localStorage.setItem('seconds', JSON.stringify(seconds))
+            }
+        }
+    } else console.log('No local storage to show the best score.')
+
+    elSpanScore.innerText = localStorage.getItem('score')
+    elSpanSeconds.innerText = localStorage.getItem('seconds')
 }
